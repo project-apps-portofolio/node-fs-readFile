@@ -2,11 +2,14 @@
 
 - Library 
     - [link to nodedemon](https://www.npmjs.com/package/nodemon)
+    - [link to pm2](https://www.npmjs.com/package/pm2)
 
 # Build
 - how to running
     - npm install
-    - nodedemon server.js
+    - nodedemon server.js 
+    or 
+    - pm2 start server.js
 
 # Output 
 ```
