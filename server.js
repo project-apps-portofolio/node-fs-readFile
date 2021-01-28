@@ -1,16 +1,20 @@
 const http = require('http');
 const fs = require('fs');
+var dateFormat = require('dateformat');
 const hostname = '127.0.0.1';
 const port = 3000;
-
 const server = http.createServer((req, res) => {
   
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
     res.end('Server Node Js');
 
+
+    let now = new Date();
+    let NowDate = (dateFormat(now, "dd.mm.yyyy"));
+
     var baseUrl = 'http://192.168.2.77/api/v1/';
-    var urlSchedules = baseUrl +  'schedulesjson/28.1.2021';
+    var urlSchedules = baseUrl +  'schedulesjson/'+NowDate;
     var urlJobs =  baseUrl + 'jobsjson'
     var urlRIB = baseUrl + 'schedulesjson/get/rib';
 

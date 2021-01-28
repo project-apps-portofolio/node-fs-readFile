@@ -9,8 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@riversun/simple-date-format": "^1.1.5",
     "body-parser": "^1.19.0",
+    "connect-livereload": "^0.6.1",
+    "dateformat": "^4.5.0",
     "express": "^4.17.1",
-    "mysql": "^2.18.1"
+    "moment": "^2.29.1",
+    "mysql": "^2.18.1",
+    "reload": "^3.1.1",
+    "timeout-refresh": "^1.0.3"
   }
 }
