@@ -7,9 +7,7 @@ var dateFormat = require('dateformat');
 
 app.get('/', function(req, res) {
     res.statusCode = 200;
-    // res.setHeader('Content-Type', 'text/plain');
     res.render('index');
-
 
     let now = new Date();
     let NowDate = (dateFormat(now, "dd.mm.yyyy"));
@@ -38,6 +36,14 @@ app.get('/', function(req, res) {
                         console.log('Successfully wrote file Schedules')
                     }
                 })
+
+                let now = new Date();
+                let NowDate = (dateFormat(now, "dd.mm.yyyy"));
+
+                var logStream = fs.createWriteStream('./logs/logSchedule.txt', {flags: 'a'});
+
+                logStream.write(jsonString+'\n');
+                logStream.end(NowDate);
 
             });
             
@@ -69,6 +75,14 @@ app.get('/', function(req, res) {
                     }
                 })
 
+                let now = new Date();
+                let NowDate = (dateFormat(now, "dd.mm.yyyy"));
+
+                var logStream = fs.createWriteStream('./logs/logJob.txt', {flags: 'a'});
+
+                logStream.write(jsonString+'\n');
+                logStream.end(NowDate);
+
             });
             
 
@@ -98,12 +112,24 @@ app.get('/', function(req, res) {
                     }
                 })
 
+                // fs.appendFile('/opt/lampp/htdocs/node-schedules/logs/log.txt', 'A request was received\n', (err) => {
+                //     res.end();
+                // });'
+                let now = new Date();
+                let NowDate = (dateFormat(now, "dd.mm.yyyy"));
+
+                var logStream = fs.createWriteStream('./logs/logRIB.txt', {flags: 'a'});
+
+                logStream.write(jsonString+'\n');
+                logStream.end(NowDate);
+
             });
             
 
         }).on('error', function(e){
             console.log("Got an error: ", e);
         });
+
 });
 
 module.exports = app;
