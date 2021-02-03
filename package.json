@@ -2,9 +2,10 @@
   "name": "node-js",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,11 +17,14 @@
     "dateformat": "^4.5.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
+    "livereload": "^0.9.1",
     "moment": "^2.29.1",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
+    "node-firebird": "^0.9.9",
     "pug": "^3.0.0",
     "reload": "^3.1.1",
+    "simple-autoreload-server": "^0.2.7",
     "timeout-refresh": "^1.0.3"
   }
 }

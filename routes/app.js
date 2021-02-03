@@ -2,17 +2,23 @@ var express = require('express');
 var app = express.Router();
 const http = require('http');
 const fs = require('fs');
+var global = require('../globals');
+var directoryFile = require('../globals_directory');
+var directoryLog = require('../globals_logs');
+
 
 var dateFormat = require('dateformat');
 
 app.get('/', function(req, res) {
+
     res.statusCode = 200;
-    res.render('index');
+    console.log('GET Data From API')
 
     let now = new Date();
     let NowDate = (dateFormat(now, "dd.mm.yyyy"));
 
-    var baseUrl = 'http://192.168.2.77/api/v1/';
+    var baseUrl = global.domain;
+    
     var urlSchedules = baseUrl +  'schedulesjson/'+NowDate;
     var urlJobs =  baseUrl + 'jobsjson'
     var urlRIB = baseUrl + 'schedulesjson/get/rib';
@@ -24,32 +30,30 @@ app.get('/', function(req, res) {
             });
 
             res.on('end', function(){
-                const ScheduleJson = '/opt/lampp/htdocs/schedule-timeline-prod/public/scheduleJson.json'
+                
+                const ScheduleJson = directoryFile.schedule_file;
+                
                 var fbResponse = JSON.parse(body);
                 console.log("Got a response: ", fbResponse);
                 const jsonString = JSON.stringify(fbResponse);
                 
                 fs.writeFile(ScheduleJson, jsonString, err => {
                     if (err) {
-                        console.log('Error writing file', err)
+                        console.log('Error writing file', err.code)
                     } else {
                         console.log('Successfully wrote file Schedules')
                     }
                 })
 
-                let now = new Date();
-                let NowDate = (dateFormat(now, "dd.mm.yyyy"));
-
-                var logStream = fs.createWriteStream('./logs/logSchedule.txt', {flags: 'a'});
-
-                logStream.write(jsonString+'\n');
-                logStream.end(NowDate);
-
             });
             
 
         }).on('error', function(e){
-            console.log("Got an error: ", e);
+            console.log("Got an error: ", e.code);
+             var logStream = fs.createWriteStream(directoryLog.schedule_log, {flags: 'a'});
+
+                logStream.write(now + ': ' + e+'\n');
+                logStream.end(NowDate);
         });
 
 
@@ -62,7 +66,9 @@ app.get('/', function(req, res) {
             });
 
             res.on('end', function(){
-                const ScheduleJsonJob = '/opt/lampp/htdocs/schedule-timeline-prod/public/jobJson.json'
+               
+                const ScheduleJsonJob = directoryFile.job_file;
+               
                 var fbResponse = JSON.parse(body);
                 console.log("Got a response: ", fbResponse);
                 const jsonString = JSON.stringify(fbResponse);
@@ -75,19 +81,14 @@ app.get('/', function(req, res) {
                     }
                 })
 
-                let now = new Date();
-                let NowDate = (dateFormat(now, "dd.mm.yyyy"));
-
-                var logStream = fs.createWriteStream('./logs/logJob.txt', {flags: 'a'});
-
-                logStream.write(jsonString+'\n');
-                logStream.end(NowDate);
-
             });
             
 
         }).on('error', function(e){
             console.log("Got an error: ", e);
+            var logStream = fs.createWriteStream(directoryLog.job_file, {flags: 'a'});
+
+                logStream.write(now + ': ' + e+'\n');
         });
 
         // RIB
@@ -99,7 +100,9 @@ app.get('/', function(req, res) {
             });
 
             res.on('end', function(){
-                const ScheduleJsonRIB = '/opt/lampp/htdocs/schedule-timeline-prod/public/ribJson.json'
+                
+                const ScheduleJsonRIB =  directoryFile.rib_file;
+
                 var fbResponse = JSON.parse(body);
                 console.log("Got a response: ", fbResponse);
                 const jsonString = JSON.stringify(fbResponse);
@@ -112,23 +115,17 @@ app.get('/', function(req, res) {
                     }
                 })
 
-                // fs.appendFile('/opt/lampp/htdocs/node-schedules/logs/log.txt', 'A request was received\n', (err) => {
-                //     res.end();
-                // });'
-                let now = new Date();
-                let NowDate = (dateFormat(now, "dd.mm.yyyy"));
-
-                var logStream = fs.createWriteStream('./logs/logRIB.txt', {flags: 'a'});
-
-                logStream.write(jsonString+'\n');
-                logStream.end(NowDate);
-
             });
             
 
         }).on('error', function(e){
             console.log("Got an error: ", e);
+            var logStream = fs.createWriteStream(directoryLog.rib_log, {flags: 'a'});
+
+                logStream.write(now + ': ' + e+'\n');
         });
+
+        res.render('index');
 
 });
 
