@@ -4,12 +4,28 @@
     - [link to nodedemon](https://www.npmjs.com/package/nodemon)
     - [link to pm2](https://www.npmjs.com/package/pm2)
 
+# Requirement Node js
+    - Node js
+    - Npm
+    - Pm2
+    - dateformat
+    - express
+
+
 # Build
 - how to running
     - npm install
     - nodedemon server.js 
     or 
     - pm2 start server.js
+
+    
+# How to app always running
+```
+ - pm2 startup
+ - [PM2] You have to run this command as root. Execute the following command:
+      sudo su -c "env PATH=$PATH:/home/unitech/.nvm/versions/node/v4.3/bin pm2 startup <distribution> -u <user> --hp <home-path> <--- copy this line to commendline
+```
 
 # Output 
 ```

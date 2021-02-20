@@ -15,13 +15,12 @@ app.get('/', function(req, res) {
     console.log('GET Data From API')
 
     let now = new Date();
-    let NowDate = (dateFormat(now, "dd.mm.yyyy"));
-
+    let NowDate = (dateFormat(now, "dd-mm-yyyy"));
+    
     var baseUrl = global.domain;
     
     var urlSchedules = baseUrl +  'schedulesjson/'+NowDate;
-    var urlJobs =  baseUrl + 'jobsjson'
-    var urlRIB = baseUrl + 'schedulesjson/get/rib';
+    console.log(NowDate);
 
         http.get(urlSchedules, function(res){
             var body = '';
@@ -49,82 +48,14 @@ app.get('/', function(req, res) {
             
 
         }).on('error', function(e){
+            // write log if error to file
             console.log("Got an error: ", e.code);
              var logStream = fs.createWriteStream(directoryLog.schedule_log, {flags: 'a'});
 
                 logStream.write(now + ': ' + e+'\n');
                 logStream.end(NowDate);
         });
-
-
-        // JSON JOB JSON
-
-        http.get(urlJobs, function(res){
-            var body = '';
-            res.on('data', function(chunk){
-                body += chunk;
-            });
-
-            res.on('end', function(){
-               
-                const ScheduleJsonJob = directoryFile.job_file;
-               
-                var fbResponse = JSON.parse(body);
-                console.log("Got a response: ", fbResponse);
-                const jsonString = JSON.stringify(fbResponse);
-                
-                fs.writeFile(ScheduleJsonJob, jsonString, err => {
-                    if (err) {
-                        console.log('Error writing file', err)
-                    } else {
-                        console.log('Successfully wrote file JOBS')
-                    }
-                })
-
-            });
-            
-
-        }).on('error', function(e){
-            console.log("Got an error: ", e);
-            var logStream = fs.createWriteStream(directoryLog.job_file, {flags: 'a'});
-
-                logStream.write(now + ': ' + e+'\n');
-        });
-
-        // RIB
-
-        http.get(urlRIB, function(res){
-            var body = '';
-            res.on('data', function(chunk){
-                body += chunk;
-            });
-
-            res.on('end', function(){
-                
-                const ScheduleJsonRIB =  directoryFile.rib_file;
-
-                var fbResponse = JSON.parse(body);
-                console.log("Got a response: ", fbResponse);
-                const jsonString = JSON.stringify(fbResponse);
-                
-                fs.writeFile(ScheduleJsonRIB, jsonString, err => {
-                    if (err) {
-                        console.log('Error writing file', err)
-                    } else {
-                        console.log('Successfully wrote file RIB')
-                    }
-                })
-
-            });
-            
-
-        }).on('error', function(e){
-            console.log("Got an error: ", e);
-            var logStream = fs.createWriteStream(directoryLog.rib_log, {flags: 'a'});
-
-                logStream.write(now + ': ' + e+'\n');
-        });
-
+        // Render Index for reload after 1 minute
         res.render('index');
 
 });

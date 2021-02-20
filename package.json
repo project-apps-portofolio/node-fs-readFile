@@ -25,6 +25,7 @@
     "pug": "^3.0.0",
     "reload": "^3.1.1",
     "simple-autoreload-server": "^0.2.7",
+    "socket.io": "^3.1.1",
     "timeout-refresh": "^1.0.3"
   }
 }
